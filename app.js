@@ -19,11 +19,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/', async (req, res) => {
-  const posts = await Post.find({})
+  const posts = await Post.find({});
   res.render('index', {
-    posts: posts
+    posts: posts,
   });
 });
+
+app.get('/posts/:id', async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  res.render('post', {
+    post: post,
+  });
+});
+
 app.get('/add_post', (req, res) => {
   res.render('add_post');
 });
@@ -34,9 +42,9 @@ app.get('/post', (req, res) => {
   res.render('post');
 });
 
-app.post('/message', async (req, res,) => {
+app.post('/message', async (req, res) => {
   await Post.create(req.body);
-  res.redirect('/add_post')
+  res.redirect('/add_post');
 });
 
 const port = 3000;
