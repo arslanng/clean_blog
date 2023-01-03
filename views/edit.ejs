@@ -6,58 +6,55 @@
   <%- include('partials/_navigation') -%>
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+  <header class="masthead" style="background-image: url('img/contact-bg.jpg')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-heading">
-            <h1><%=post.title%></h1>
-            <h2 class="subheading"><%=post.title%></h2>
-            <span class="meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on <%=post.dateCreated%></span>
+          <div class="page-heading">
+            <h1>Add New Post</h1>
+
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Post Content -->
-  <article>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <p><%=post.detail%></p>
-
-          <h2 class="section-heading"><%=post.title%></h2>
-
-
-        </div>
-      </div>
-      <!-- button -->
-      <div class="row pt-5">
-        <div class="col-lg-8 col-md-10 mx-auto">
-
-          <ul class="list-inline text-center">
-            <li class="list-inline-item">
-              <a 
-              href = "/posts/edit/<%= post._id%>"
-              class="btn btn-primary p-2 tm-btn-animate tm-btn-download tm-icon-download"><span>Update Post</span></a>
-            </li>
-            <li class="list-inline-item">
-              <a 
-              href="/posts/<%= post._id %>?_method=DELETE"
-              
-              class="btn btn-danger p-2 tm-btn-animate tm-btn-download tm-icon-download"
-              onclick="return confirm('ARE YOU SURE?')"
-              ><span>Delete Post</span></a>
-            </li>
-          </ul>
-        </div>
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <form novalidate 
+        action="/posts/<%= post._id %>?_method=PUT"
+        method="POST">
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Post Title</label>
+              <input 
+              value="<%= post.title %>"
+              type="text" 
+              class="form-control" 
+              placeholder="Title" 
+              name="title" 
+              id="title" required 
+              data-validation-required-message="Please enter your title.">
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+              <label>Post Detail</label>
+              <textarea rows="5" class="form-control" placeholder="Detail" id="detail" name="detail" required data-validation-required-message="Please enter your text."><%= post.detail %></textarea>
+              <p class="help-block text-danger"></p>
+            </div>
+          </div>
+          <br>
+          <div id="success"></div>
+          <button type="submit" class="btn btn-primary" id="sendMessageButton">Update</button>
+        </form>
       </div>
     </div>
-  </article>
+  </div>
 
   <hr>
 
@@ -101,6 +98,10 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Contact Form JavaScript -->
+  <script src="js/jqBootstrapValidation.js"></script>
+  <script src="js/contact_me.js"></script>
 
   <!-- Custom scripts for this template -->
   <script src="js/clean-blog.min.js"></script>

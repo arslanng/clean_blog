@@ -1,10 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 
 const path = require('path');
 const ejs = require('ejs');
 
-const Post = require('./modals/Post');
+const Post = require('./models/Post');
+const PostController = require('./controllers/postController')
+const PageController = require('./controllers/pageController')
 
 const app = express();
 
@@ -12,40 +15,30 @@ const app = express();
 mongoose.set('strictQuery', false);
 mongoose.connect('mongodb://localhost/cleanBlog-test-db');
 
+// Middleware
+app.use(
+  methodOverride('_method', {
+    methods: ['POST', 'GET'],
+  })
+);
+
 app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', async (req, res) => {
-  const posts = await Post.find({});
-  res.render('index', {
-    posts: posts,
-  });
-});
+// Router
+app.get('/', PostController.getAllPosts);
+app.get('/posts/:id', PostController.getPost);
+app.post('/message', PostController.createPost);
+app.put('/posts/:id', PostController.updatePost);
+app.delete('/posts/:id', PostController.deletPost);
 
-app.get('/posts/:id', async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  res.render('post', {
-    post: post,
-  });
-});
-
-app.get('/add_post', (req, res) => {
-  res.render('add_post');
-});
-app.get('/about', (req, res) => {
-  res.render('about');
-});
-app.get('/post', (req, res) => {
-  res.render('post');
-});
-
-app.post('/message', async (req, res) => {
-  await Post.create(req.body);
-  res.redirect('/add_post');
-});
+app.get('/add_post', PageController.getAdd);
+app.get('/about', PageController.getAbout);
+app.get('/post', PageController.getPost);
+app.get('/posts/edit/:id', PageController.getEdit);
 
 const port = 3000;
 app.listen(port, () => {
