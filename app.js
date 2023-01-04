@@ -13,7 +13,7 @@ const app = express();
 
 // DB bağlantı:
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://localhost/cleanBlog-test-db');
+mongoose.connect('mongodb+srv://arslan_ng:narniag7A.@cluster0.cm2ofum.mongodb.net/?retryWrites=true&w=majority');
 
 // Middleware
 app.use(
@@ -40,7 +40,7 @@ app.get('/about', PageController.getAbout);
 app.get('/post', PageController.getPost);
 app.get('/posts/edit/:id', PageController.getEdit);
 
-const port = 3000;
+const port = process.env.port || 5000;
 app.listen(port, () => {
   console.log(`Sunucu ${port} portunda başlatıldı`);
 });
